@@ -13,6 +13,7 @@ run:
 	 	-e LANG=C.UTF-8 \
 		-e FLASK_APP=application.py \
 		-w /wd/ \
-		flask /bin/bash -c 'python3 application.py'\
+		flask /bin/bash -c 'tmux'\
 		#-e LC_ALL=C.UTF-8 \                                                     
+		#flask /bin/bash -c 'python3 application.py'\
 			

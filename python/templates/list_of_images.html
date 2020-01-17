@@ -2,31 +2,28 @@
 
 {% block body %}
 
-<script>
-function drawImageRect(strDataURI, canvas_id, rectangle){
-    var myCanvas = document.getElementById(canvas_id)
-    var ctx = myCanvas.getContext('2d');
-    var img = new Image;
-    img.onload = function(){
-        x_min = rectangle[0]*myCanvas.width/img.width;
-        y_min = rectangle[1]*myCanvas.height/img.height;
-        x_max = rectangle[2]*myCanvas.width/img.width;
-        y_max = rectangle[3]*myCanvas.height/img.height;
-        ctx.drawImage(img,0,0,myCanvas.width,myCanvas.height); // Or at whatever offset you like
-        ctx.beginPath();
-        ctx.lineWidth="6";
-        ctx.strokeStyle="green";
-        ctx.rect(x_min, y_min, x_max-x_min, y_max-y_min); 
-        ctx.stroke();
-    };
-    img.src = strDataURI;
-    }
-</script>
-{% for indx, obj in objects %}
-<canvas id="{{ indx }}" width="400" height="200" ></canvas>
-<script>
-drawImageRect("{{ obj.url }}","{{ indx }}", {{ obj.vert }})
-</script>
-{% endfor %}    
 
+  First name: <input type="text" name="fname" id="fname" value="John"><br>
+  Last name: <input type="text" name="lname" id="lname" value="Doe"><br>
+  <input type="button" id="button" value="Submit form">
+  <p id='text'><p>
+
+<script>
+function sendRequest(){                                                                                                                                                   
+	var p = document.getElementById('text');
+	p.innerHTML='Loaading...'
+    var _HTTP = new XMLHttpRequest();                                                                                                                                     
+    if (_HTTP) {                                                                                                                                                          
+	_HTTP.open('POST', '{{url_for('proc')}}', true);                                                                                                      
+	_HTTP.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');                                                                                         
+	_HTTP.send(JSON.stringify({'fname': document.getElementById('fname').value, 
+				   'lnane': document.getElementById('lname').value}));                                                                                                           
+	    _HTTP.onreadystatechange = function() {
+		    p.innerHTML = this.responseText;
+	};
+    };
+}                                                                                                                                                                         
+var btm=document.getElementById('button');
+btm.onclick = sendRequest;
+</script>
 {% endblock %}
